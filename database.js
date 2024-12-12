@@ -44,10 +44,19 @@ export async function createUser(user_name, email, password, phone_number, profi
 }
 
 //Updates the user using the primary key user_id
-export async function updateUser(user_id, user_name) {
+export async function updateUser(user_id, user_name, email, phone_number) {
     try {
         // Update user_name
-        await pool.query(`UPDATE users SET user_name = ? WHERE user_id = ?`, [user_name, user_id]);
+        await pool.query(
+            `UPDATE users 
+             SET user_name = ?, email = ?, phone_number = ? 
+             WHERE user_id = ?`, 
+            [user_name, email, phone_number, user_id]
+        );
+        
+        
+        
+        
         console.log(`User with ID ${user_id} updated successfully.`);
 
     } catch (error) {
@@ -61,4 +70,11 @@ export async function updateUser(user_id, user_name) {
             throw error;
         }
     }
+}
+
+export async function deleteUser(user_id){
+    
+    await pool.query(`DELETE FROM users WHERE user_id = ?`, [user_id])
+
+
 }

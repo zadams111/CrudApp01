@@ -1,8 +1,10 @@
 import express from 'express';
-import { createUser, getUsers, getUser, updateUser} from '../database.js';
+import { createUser, getUsers, getUser, updateUser, deleteUser} from '../database.js';
 import multer from 'multer';
 import fs from 'fs';
 import path from 'path';
+
+import bcrypt from 'bcrypt'
 
 const router = express.Router();
 
@@ -91,11 +93,23 @@ router.post('/update/:user_id', upload.single('profile_picture'), async (req, re
     }
 
     //update the user with the specified user_id
-    await updateUser(user_id, user_name)
+    await updateUser(user_id, user_name, email, phone_number)
 
 
     res.redirect('/');
 });
+
+
+
+//delete user
+router.get('/delete/:user_id', (req, res) =>{
+
+    const {user_id} = req.params;
+    deleteUser(user_id);
+
+    res.redirect('/');
+
+})
 
 
 export default router;
