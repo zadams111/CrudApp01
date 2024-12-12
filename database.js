@@ -43,8 +43,22 @@ export async function createUser(user_name, email, password, phone_number, profi
     return getUsers(user_id);
 }
 
+//Updates the user using the primary key user_id
+export async function updateUser(user_id, user_name) {
+    try {
+        // Update user_name
+        await pool.query(`UPDATE users SET user_name = ? WHERE user_id = ?`, [user_name, user_id]);
+        console.log(`User with ID ${user_id} updated successfully.`);
 
-export async function updateUser(){
-    console.log('Updated User Data')
-
+    } catch (error) {
+        // Check if the error is a unique constraint violation
+        if (error.code === 'ER_DUP_ENTRY') { // MySQL/MariaDB specific error code
+            console.error('Error: The user_name already exists.');
+            throw new Error('This username is already taken. Please choose a different one.');
+        } else {
+            // For other errors, rethrow them
+            console.error('Error updating user:', error);
+            throw error;
+        }
+    }
 }

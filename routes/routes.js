@@ -1,5 +1,5 @@
 import express from 'express';
-import { createUser, getUsers, getUser } from '../database.js';
+import { createUser, getUsers, getUser, updateUser} from '../database.js';
 import multer from 'multer';
 import fs from 'fs';
 import path from 'path';
@@ -91,7 +91,7 @@ router.post('/update/:user_id', upload.single('profile_picture'), async (req, re
     }
 
     //update the user with the specified user_id
-    //await updateUser(user_id, user_name, email, password, phone_number, new_image)
+    await updateUser(user_id, user_name)
 
 
     res.redirect('/');
