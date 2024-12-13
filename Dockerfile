@@ -1,6 +1,6 @@
-FROM node:12
+FROM node:14
 
-WORKDIR /app
+WORKDIR /CrudApp01
 
 COPY package.json package-lock.json ./
 
